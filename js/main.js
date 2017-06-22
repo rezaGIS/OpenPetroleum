@@ -86,12 +86,8 @@ require([
             }, "legendDiv");
             legendDijit.startup();
         }
-    });
-    
-    //Calls feature layer
+    }); 
     map.addLayers([opsMap])
-
- // adds in feature service
 
 });
 
