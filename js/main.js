@@ -1,9 +1,6 @@
-﻿// -- CDLE initializer / base functionality 
-
-// Variables
-
-require([
+﻿require([
     "esri/map",
+    "esri/layers/ArcGISDynamicMapServiceLayer",
     "esri/layers/FeatureLayer",
     "esri/dijit/Legend",
     "dojo/_base/array",
@@ -11,11 +8,16 @@ require([
     "dojo/parser",
     "dgrid/OnDemandGrid",
     "dgrid/Selection",
+    "dojo/on",
     "dojo/_base/declare",
+    "dojo/_base/connect",
+    "dojo/dom",
+    "agsjs/dijit/TOC",
     "dojo/ready",
     "dojo/domReady!"
 ], function (
     Map,
+    ArcGISDynamicMapServiceLayer,
     FeatureLayer,
     Legend,
     arrayUtils,
@@ -23,7 +25,11 @@ require([
     parser,
     Grid,
     Selection,
+    on,
     declare,
+    dom,
+    connect,
+    TOC,
     ready
     ) {
     parser.parse();
@@ -52,21 +58,47 @@ require([
         });
     }
     map = new Map("mapDiv", {
-        basemap: "topo",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
+        basemap: "topo", 
         center: [-104, 40], // longitude, latitude
         zoom: 7,
         sliderStyle: "large",
         minZoom: 7
+        
     });
-
+    
+    map.on("layers-add-result", function (evt) {
+        opsMap.setVisibleLayers([0]);
+        var toc = new TOC({  //Table of Contents info
+            map: map,
+            layerInfos: [
+            {
+                layer: opsMap,
+                title: "Petroleum Events"
+            }]
+        }, 'tocDiv');
+        toc.startup();
+        toc.on('load', function () {
+            if (console)
+                console.log('TOC loaded');
+        });
+        toc.on('toc-node-checked', function (evt) { // controls TOC hierarchy
+            if (console) {
+                console.log("TOCNodeChecked, rootLayer:"
+                + (evt.rootLayer ? evt.rootLayer.id : 'NULL')
+                + ", serviceLayer:" + (evt.serviceLayer ? evt.serviceLayer.id : 'NULL')
+                + " Checked:" + evt.checked);
+                if (evt.checked && evt.rootLayer && evt.serviceLayer) {
+                    // evt.rootLayer.setVisibleLayers([evt.serviceLayer.id])
+                }
+            }
+        });
+    });
     infoTemplate = new InfoTemplate();
     infoTemplate.setTitle(infoTemplateTitle);
     infoTemplate.setContent(popupData);
 
-    opsMap = new FeatureLayer(opsURL, {
-        outFields: outFields,
-        infoTemplate: infoTemplate,
-        mode: FeatureLayer.MODE_SELECTION,
+    opsMap = new ArcGISDynamicMapServiceLayer(opsURL, {
+        outFields: ["*"]
     });
 
     opsMap.on("mouse-over", function () {
@@ -75,20 +107,15 @@ require([
     opsMap.on("mouse-out", function () {
         map.setMapCursor("default");
     });
-    map.on("layers-add-result", function (evt) {
-        var layerInfo = arrayUtils.map(evt.layers, function (layer, index) {
-            return { layer: layer.layer, title: layer.layer.name};
-        });
-        if (layerInfo.length > 0) {
-            var legendDijit = new Legend({
-                map: map,
-                layerInfos: layerInfo, "defaultSymbol": false
-            }, "legendDiv");
-            legendDijit.startup();
-        }
-    }); 
-    map.addLayers([opsMap])
-
+    document.getElementById('allClosed').onclick = function (evt) {
+        opsMap.setVisibleLayers([1, 2, 3, 4, 5, 6]);
+    };
+    document.getElementById('allRemove').onclick = function (evt) {
+        opsMap.setVisibleLayers([]);
+    };
+    map.addLayers([opsMap]);
+    window.onload = findEvents();
+          
 });
 
 

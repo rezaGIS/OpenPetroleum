@@ -38,26 +38,6 @@
                 layerQueryRemove();
             }
         });
-        $('#layerOpenCheck').on('click', function closedToggle() {
-            if (document.getElementById('layerOpenCheck').checked == true) {
-                toggleString = "Status <> 'Closed'";
-                layerQuery();
-            }
-            else {
-                toggleString = "Status <> 'Closed'";
-                layerQueryRemove();
-            }
-        });
-        $(window).on('load', function layerLoad() {
-            if (document.getElementById('layerOpenCheck').checked == true) {
-                toggleString = "Status <> 'Closed'";
-            }
-            else if (document.getElementById('layerClosedCheck').checked == true) {
-                toggleString = "Status = 'Closed'";
-            }
-            else {
-                toggleString = ""
-            }
-            layerQuery();
-        });
+        
+       
 });

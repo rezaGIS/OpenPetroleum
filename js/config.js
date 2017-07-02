@@ -1,4 +1,6 @@
-﻿// Variables
+﻿var DEBUG = true;
+
+// Variables
 var map;
 var circle;
 var grid;
@@ -7,9 +9,19 @@ var buffer = {
 }
 var circleExtent;
 var data = [];
-var outFields = ["OBJECTID", "Shape", "Facility_I", "Event_ID", "Site_Name", "Address", "City_State", "Date_of_Re", "Status", "OPS_Contac", "Phone", "Email"];
+var outFields = ["*"];
 // Mapservices URL
-var opsURL = "https://gis.co.gov/oitprod10/rest/services/CDLE/OPS_Events_sde/MapServer/0";
+var opsURL = "https://gis.colorado.gov/oit/rest/services/CDLE/OPs_Events_tiers/MapServer";
+
+var opsQueryDictionary = [
+    { name: "Open", url: "https://gis.colorado.gov/oit/rest/services/CDLE/OPs_Events_tiers/MapServer/0" },
+    { name: "Tier1", url: "https://gis.colorado.gov/oit/rest/services/CDLE/OPs_Events_tiers/MapServer/2" },
+    { name: "Tier2", url: "https://gis.colorado.gov/oit/rest/services/CDLE/OPs_Events_tiers/MapServer/3" },
+    { name: "Tier3", url: "https://gis.colorado.gov/oit/rest/services/CDLE/OPs_Events_tiers/MapServer/4" },
+    { name: "Tier4", url: "https://gis.colorado.gov/oit/rest/services/CDLE/OPs_Events_tiers/MapServer/5" },
+    { name: "Others", url: "https://gis.colorado.gov/oit/rest/services/CDLE/OPs_Events_tiers/MapServer/6" }
+];
+
 // Mapservices variables
 var opsMap;
 // Pop-up

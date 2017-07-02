@@ -76,7 +76,6 @@
 
     }, "search");
     geocode.startup();
-
     geocode.on("select-result", showLocation);
 
     //mouse click
@@ -99,7 +98,7 @@
             });
             circleExtent = circle.getExtent();
             map.setExtent((circleExtent).expand(1.3));
-            var graphic = new Graphic(circle, circleSymb);
+            var graphic = new Graphic(circle, symbol);
             map.graphics.add(graphic);
             var query = new Query();
             query.geometry = circleExtent;
