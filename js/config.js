@@ -32,3 +32,11 @@ var popupData = "<b>Site Name:</b> ${Site_Name}</br>" + "<b>Event ID:</b> ${Even
                 "<b>Status:</b> ${Status}</br>" + "<b>Address:</b> ${Address}</br>" + "<b>City/State:</b> ${City_State}</br>" +
                 "<b>Release Date:</b> ${Date_of_Re:DateFormat(selector: 'date', fullYear: true)}</br>" + "<b>Contact:</b> ${OPS_Contac}</br>" + "<b>Phone:</b> ${Phone}</br>" +
                 "<b>Email:</b> ${Email}</br>" + "<b>COSTIS Link:</b> <a href=" + costisURL + " target='_blank'> Click Here!</a> </br>";
+/*--Dgrid Highlight styling--*/
+var lineHighlight = new SimpleLineSymbol();
+lineHighlight.setColor(new Color([0, 197, 255, 1]));
+lineHighlight.setWidth(2);
+var markerHighlight = new SimpleMarkerSymbol();
+markerHighlight.setOutline(lineHighlight);
+markerHighlight.setColor(new Color([0, 197, 255, 0]));
+markerHighlight.setSize(6);

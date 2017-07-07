@@ -166,9 +166,7 @@
                     var query = new Query();
                     query.objectIds = inBuffer;
                     buffer.value = query.objectIds;
-
                     populateGrid(Memory);
-
                 }
                 else {
                 }
@@ -312,6 +310,5 @@
     $('#findBtnGeo').click(function () {
         geocoder.startup();
         geocoder.on("select", showLocation);
-
     });
 });

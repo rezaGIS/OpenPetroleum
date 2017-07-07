@@ -41,14 +41,43 @@
         //    maxResults: 4,
         //    countryCode: "US",
         //    suffix: "CO"
-
         //}, "search");
         //geocode.startup();
-
-        //geocode.on("select-result", showLocation);
-        
+        //geocode.on("select-result", showLocation);       
         var queryOps = new Query();
-        /*-- Query features --*/
+        /*--Query Grid--*/
+        grid.on(".dgrid-row:click", function selectGrid(g) {
+            /*--Dgrid Highlight styling--*/
+            var lineHighlight = new SimpleLineSymbol();
+            lineHighlight.setColor(new Color([0, 197, 255, 1]));
+            lineHighlight.setWidth(2);
+            var markerHighlight = new SimpleMarkerSymbol();
+            markerHighlight.setOutline(lineHighlight);
+            markerHighlight.setColor(new Color([0, 197, 255, 0]));
+            markerHighlight.setSize(6);
+            /*--Find ID of clicked row--*/
+            var row = grid.row(g);
+            var queryGrid = new Query();
+            /*--Query--*/
+            queryGrid.outFields = ["*"]; 
+            queryGrid.returnGeometry = true;
+            queryGrid.where = "ID = '" + row.data.id + "'";
+            DEBUG && console.log('Searching for ID: ' + row.data.id)
+            opsQueryDictionary.map(function (results) {             
+                DEBUG && console.log("Searching for '" + results.name + "', URL:'" + results.url + "'");
+                var queryClickTask = new QueryTask(results.url);
+                queryClickTask.execute(queryGrid).then(function (gridSearch) {                   
+                    if (gridSearch.features.length > 0) {
+                        var highlight = new Graphic(gridSearch.features[0].geometry, markerHighlight);
+                        map.graphics.add(highlight);
+                        map.centerAndZoom(highlight.geometry, 17);
+                    }
+                }, function (e) {
+                    console.log(e);
+                });
+            });
+        });
+        /*--Query features--*/
         function findFeatures() {
             DEBUG && console.log("Find features beginning.")
             var taskPromise = [];
@@ -57,45 +86,38 @@
                 DEBUG && console.log("Searching for '" + results.name + "', URL:'" + results.url + "'");
                 var queryClickTask = new QueryTask(results.url);
                 taskPromise = queryClickTask.execute(queryOps).then(function (ops) {
-                    //DEBUG && console.log(ops[0].features.attributes["Facility_ID"]);
                     for (var i = 0; i < ops.features.length; i++) {
-                        tempStore.push(ops.features[i]);
-                        //console.log(tempStore);
+                        tempStore.push(ops.features[i]); // store to array
+                        DEBUG && console.log(tempStore);
                     }
-                    //tempStore = ops[0].attributes["Site_Name"]
-                    //console.log(tempStore)
-                    //return tempStore.push(ops.features.length);
                 }, function (e) {
                     console.log(e);
-                });
-                
+                });               
             });         
-            var newPromise = new all([tempStore, taskPromise]);
+            var newPromise = new all([tempStore, taskPromise]); // tempStore and taskPromise complete b4 continuing
+            /*--Store and populate dgrid--*/
             newPromise.then(function () {
-                console.log(tempStore.features)
-                var data = array.map(tempStore.features, function (feature) {
-                    
+                DEBUG && console.log(tempStore.length);                
+                var data = tempStore.map(function (feature) {                   
                     return {
-                //        // property names used here match those used when creating the dgrid
-                //        "id": tempStore.features.attributes[outFields[6]]
-                //        //"facility": feature.attributes[outFields[2]],
-                        "eventID": feature.attributes[outFields[0]],
-                //        //"siteName": feature.attributes[outFields[6]],
-                //        //"street": feature.attributes[outFields[6]],
-                //        //"cityStateZip": feature.attributes[outFields[6]],
-                //        //"date": feature.attributes[outFields[6]],
-                //        //"status": feature.attributes[outFields[6]],
-                //        //"contact": feature.attributes[outFields[6]],
-                //        //"phone": feature.attributes[outFields[6]],
-                //        //"email": feature.attributes[outFields[6]]
+                        "id": feature.attributes.ID,
+                        "facility": feature.attributes.Facility_ID,
+                        "eventID": feature.attributes.Event_ID,
+                        "siteName": feature.attributes.Site_Name,
+                        "street": feature.attributes.Address,
+                        "cityStateZip": feature.attributes.City_State_Zip,
+                        "date": feature.attributes.Date_of_Release,
+                        "status": feature.attributes.Status,
+                        "contact": feature.attributes.OPS_Contact_Name,
+                        "phone": feature.attributes.Phone,
+                        "email": feature.attributes.Email
                     };
                 });
-                console.log(data);
-                var memStore = new Memory({ data: data });
-                window.grid.set("store", memStore);
+                DEBUG && console.log("Data kept: " + (data.length == tempStore.length))
+                var memStore = new Memory({ data: data }); // set dgrid memory
+                window.grid.set("store", memStore); // populate dgrid
                 window.grid.set("sort", [{ attribute: "eventID", descending: false }]);// workaround for dgrid not populating until grid was sorted}
                 map.setExtent((circleExtent).expand(1.3));
-
             })
         }
         map.on("click", function mapSearch(evt) {
@@ -116,14 +138,14 @@
                 radiusUnit: "esriMiles"
             });
             circleExtent = circle.getExtent();
-            //map.setExtent((circleExtent).expand(1.3)); might want to move this after query is complete -- maybe not tho could be confusing
             var graphic = new Graphic(circle, circleSymbol);
             map.graphics.add(graphic);
             queryOps.geometry = circleExtent;
             queryOps.returnGeometry = true;
-            queryOps.outFields = ["*"];
+            queryOps.outFields = ["Facility_ID", "Event_ID", "Site_Name", "Address", "City_State_Zip","Status", "OPS_Contact_Name", "Phone", "Email", "Latitude", "Longitude", "Closure_Type", "Date_of_Release", "Closure_Date", "ID"];
             findFeatures();
             })
             
-        });
+    });
+    
     };
