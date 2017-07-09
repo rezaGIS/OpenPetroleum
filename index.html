@@ -16,7 +16,7 @@
     <!-- ESRI CSS API 3.18-->
     <link rel="stylesheet" href="https://js.arcgis.com/3.18/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
-    <link rel="stylesheet" href="https://js.arcgis.com/3.18/dgrid/css/dgrid.css"> 
+    <link rel="stylesheet" href="https://js.arcgis.com/3.18/dgrid/css/dgrid.css">
     <!-- Custom styles for this template -->
     <link href="css/index.css" rel="stylesheet" />
     <link href="css/sidebar.css" rel="stylesheet" />
@@ -24,21 +24,21 @@
     <!-- TOC -->
     <link rel="stylesheet" type="text/css" href="../agsjs/css/agsjs.css" />
     <script type="text/javascript">
-                    	// helpful for understanding dojoConfig.packages vs. dojoConfig.paths:
-                  // http://www.sitepen.com/blog/2013/06/20/dojo-faq-what-is-the-difference-packages-vs-paths-vs-aliases/
-                  var dojoConfig = {
-                    paths: {
-                      //if you want to host on your own server, download and put in folders then use path like:
-                            agsjs: location.pathname.replace(/\/[^/]+$/, '') + '/agsjs'
-                        }
-                  };
+        // helpful for understanding dojoConfig.packages vs. dojoConfig.paths:
+        // http://www.sitepen.com/blog/2013/06/20/dojo-faq-what-is-the-difference-packages-vs-paths-vs-aliases/
+        var dojoConfig = {
+            paths: {
+                //if you want to host on your own server, download and put in folders then use path like:
+                agsjs: location.pathname.replace(/\/[^/]+$/, '') + '/agsjs'
+            }
+        };
     </script>
     <script src="https://js.arcgis.com/3.18/"></script>
     <!-- Custom Javascript-->
     <script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/findEvents.js"></script>
-    
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('[data-toggle=offcanvas]').click(function () {
@@ -92,7 +92,7 @@
                         <button class="btn btn-xs btn-warning" id="allRemove">Remove All</button>
                     </div>
                 </div>
-                
+
                 <div class="well well-sm">
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
@@ -105,28 +105,35 @@
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
-                                    <div id="tools" class="toolBox" style="height:auto;">
+                                    <div id="tools" class="toolBox">
                                         <p id="toolTitle">Search by location:</p>
                                         <div name="radioButtons" id="radio">
-                                            Geocode address:<input type="radio" name="radioGeocode" id="useGeocode" checked="checked">
+                                            Geocode address:<input type="radio" name="radioTools" id="useGeocode" checked="checked">
                                             Map click:
-                                            <input type="radio" name="radioMap" id="useMap">
+                                            <input type="radio" name="radioTools" id="useMap">
+
+                                        </div>
+                                        <div>
                                             <form>
-                                            <select id="bufferDist" class="form-control col-lg-2">
-                                                <option value=".25">1/4 Mile</option>
-                                                <option value=".5">1/2 Mile</option>
-                                                <option value="1">1 Mile</option>
-                                                <option value="2">2 Miles</option>
-                                            </select>
+                                                <select id="bufferDist" class="form-control col-lg-2">
+                                                    <option value=".25">1/4 Mile</option>
+                                                    <option value=".5">1/2 Mile</option>
+                                                    <option value="1">1 Mile</option>
+                                                    <option value="2">2 Miles</option>
+                                                </select>
                                             </form>
-                                        </div>                                  
-                                        <div id="search_div">
-                                            <div id="search"></div>
                                         </div>
-                                        <div id="clickDesc">
-                                            <p>Click on map to find surrounding events.</p>
+                                        <div>
+                                            <div id="search_div">
+                                                <div id="search"></div>
+                                            </div>
+                                            <div id="clickDesc">
+                                                <p><br>Click on map to find surrounding events.</p>
+                                            </div>
                                         </div>
-                                        <button type="button" id="clearBtn" class="btn btn-warning btn-xs">Clear</button>
+                                        <div><button type="button" id="clearBtn" class="btn btn-warning btn-xs">Clear</button></div>
+                                    
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -152,9 +159,9 @@
                                                 <div class="input-group-btn" id="qryDropBtn">
                                                     <select id="qryField" name="qryField" class="form-control">
                                                         <option value="Event_ID">Event ID</option>
-                                                        <option value="Facility_I">Facility ID</option>
-                                                        <option value="Site_Name_">Name</option>
-                                                        <option value="Status_Sea">Status</option>
+                                                        <option value="Facility_ID">Facility ID</option>
+                                                        <option value="Site_Name">Name</option>
+                                                        <option value="Status">Status</option>
                                                     </select>
                                                 </div>
                                             </div>

@@ -73,11 +73,9 @@
         maxResults: 4,
         countryCode: "US",
         suffix: "CO"
-
     }, "search");
     geocode.startup();
     geocode.on("select-result", showLocation);
-
     //mouse click
     map.on("click", function mapClick(evt) {
         if (document.getElementById('useMap').checked) {

@@ -11,6 +11,7 @@
     QueryTask,
     ready
     ) {
+    
         function layerQuery() {
             var qt = new QueryTask(opsURL);
             var queryToggle = new Query();

@@ -5,6 +5,7 @@
     "esri/dijit/Legend",
     "dojo/_base/array",
     "esri/InfoTemplate",
+    "esri/dijit/Search",
     "dojo/parser",
     "dgrid/OnDemandGrid",
     "dgrid/Selection",
@@ -22,6 +23,7 @@
     Legend,
     arrayUtils,
     InfoTemplate,
+    Search,
     parser,
     Grid,
     Selection,
@@ -49,6 +51,7 @@
             "email": "EMAIL"
         }
     }, "grid");
+   
     // Function for DGRID date/time formatter
     function formatTimestamp(value) {
         var inputDate = new Date(value);
