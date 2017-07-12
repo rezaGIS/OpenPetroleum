@@ -8,11 +8,13 @@
     "esri/dijit/Search",
     "esri/geometry/Circle",
     "esri/geometry/Point",
+    "esri/geometry/Extent",
     "esri/symbols/SimpleMarkerSymbol",
     "esri/symbols/SimpleFillSymbol",
     "esri/symbols/SimpleLineSymbol",
     "esri/Color",
     "esri/graphic",
+    "esri/tasks/locator",
     /*--Dojo--*/
     "dojo/store/Memory",
     "dojo/_base/array",
@@ -27,34 +29,49 @@
      Search,
      Circle,
      Point,
+     Extent,
      SimpleMarkerSymbol,
      SimpleFillSymbol,
      SimpleLineSymbol,
      Color,
      Graphic,
+     Locator,
      /*--Dojo--*/
      Memory,
      array,
      domConstruct,
      all
      ) {
-        /*--Variables--*/
+        /*--Common Resources--*/      
         var queryOps = new Query();
         var circleSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULL, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SHORTDASHDOTDOT, new Color([105, 105, 105]), 2), new Color([255, 255, 0, 0.25]));
         queryOps.outFields = ["Facility_ID", "Event_ID", "Site_Name", "Address", "City_State_Zip", "Status", "OPS_Contact_Name", "Phone", "Email", "Latitude", "Longitude", "Closure_Type", "Date_of_Release", "Closure_Date", "ID"];
         queryOps.returnGeometry = true;
-        var buffDist = document.getElementById('bufferDist').value;
         var mapClickEvent;
         var center;
         /*--Geocoder--*/
-        var geocode = new Search({
-            map: map,
-            maxResults: 4,
-            countryCode: "US",
-            suffix: "CO"  
-        }, "search");
-        geocode.startup();
-        geocode.on("select-result", showLocation);      
+        var coloradoExtent = new Extent({
+            xmin: -109.205,
+            ymin: 36.944,
+            xmax: -101.919,
+            ymax: 41.034
+        })
+        var searchGeocoder = new Search({ map: map, sources: [] }, "search");
+        searchGeocoder.on("load", function () {
+            var sources = searchGeocoder.sources;
+            sources.push({
+                locator: new Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"),
+                placeholder: "601 E 18th Ave Denver, CO 80015",
+                enableSuggestions: true,
+                maxResults: 3,
+                maxSuggestions: 3,
+                minCharacters: 3,
+                searchExtent: coloradoExtent
+            })
+            searchGeocoder.set("sources", sources)
+        });     
+        searchGeocoder.startup();
+        searchGeocoder.on("select-result", showLocation);
         /*--Query Grid Selection--*/
         grid.on(".dgrid-row:click", function selectGrid(g) {
             /*--Dgrid Highlight styling--*/
@@ -81,8 +98,7 @@
                     if (gridSearch.features.length > 0) {
                         var highlight = new Graphic(gridSearch.features[0].geometry, markerHighlight);
                         map.graphics.add(highlight);
-                        map.centerAndZoom(highlight.geometry, 17);                       
-                        opsMap.setVisibleLayers([0, 1, 2, 3, 4, 5, 6]);                       
+                        map.centerAndZoom(highlight.geometry, 17);                                                                    
                     }
                 }, function (e) {
                     console.log(e);
@@ -128,29 +144,15 @@
                 DEBUG && console.log("Data kept: " + (data.length == tempStore.length))
                 var memStore = new Memory({ data: data }); // set dgrid memory
                 window.grid.set("store", memStore); // populate dgrid
-                window.grid.set("sort", [{ attribute: "eventID", descending: false }]);// workaround for dgrid not populating until grid was sorted}             
+                window.grid.set("sort", [{ attribute: "eventID", descending: false }]);// workaround for dgrid not populating until grid was sorted}
+                opsMap.setVisibleLayers([0, 1, 2, 3, 4, 5, 6]);
             })
         }
-        function activateMapClick() {
-              mapClickEvent = map.on("click", function mapSearch(evt) {
-                //map.graphics.clear();
-                /*-- Collects and stores pointer xy for use --*/
-                var promises;
-                var xPointer = evt.mapPoint.getLatitude();
-                var yPointer = evt.mapPoint.getLongitude();
-                center = ([yPointer, xPointer]);
-                DEBUG && console.log("Cursor coordinates= x:" + xPointer + "; y:" + yPointer)
-                createCircle();
-              });
-        }
-        function showLocation(geo) {
-            
-            center = geo.result.feature.geometry;
-            createCircle();
-        };
         function createCircle() {
             /*--Create circle graphic for visual--*/
+            var buffDist = document.getElementById('bufferDist').value;
             map.graphics.clear();
+            console.log(buffDist);
             circle = new Circle({
                 center: center,
                 geodesic: true,
@@ -164,6 +166,22 @@
             map.setExtent((circleExtent).expand(1.3));
             findFeatures();
         }
+        function activateMapClick() {
+              mapClickEvent = map.on("click", function mapSearch(evt) {
+                /*-- Collects and stores pointer xy for use --*/
+                var promises;
+                var xPointer = evt.mapPoint.getLatitude();
+                var yPointer = evt.mapPoint.getLongitude();
+                center = ([yPointer, xPointer]);
+                DEBUG && console.log("Cursor coordinates= x:" + xPointer + "; y:" + yPointer)
+                createCircle();
+              });
+        }
+        function showLocation(geo) {           
+            center = geo.result.feature.geometry;
+            createCircle();
+        };
+        /*--Button functions--*/
         document.getElementById("findBtn").onclick = function attributeSerach() {
             var queryEntry = document.getElementById('qryBox').value;
             var queryField = document.getElementById('qryField').value;
@@ -172,6 +190,12 @@
             DEBUG && console.log(queryOps.where);
             findFeatures();
         };
+        document.getElementById("clearBtn").onclick = function clearResults() {
+            map.graphics.clear();
+            var memStore = new Memory({ data: data });
+            window.grid.set("store", memStore);
+            map.setZoom(11);
+        }
         document.getElementById("radio").addEventListener("change", function toolListen() {
             if (document.getElementById("useMap").checked == true) {
                 DEBUG && console.log("Use map click.")

@@ -51,7 +51,6 @@
             "email": "EMAIL"
         }
     }, "grid");
-   
     // Function for DGRID date/time formatter
     function formatTimestamp(value) {
         var inputDate = new Date(value);
@@ -62,13 +61,11 @@
     }
     map = new Map("mapDiv", {
         basemap: "topo", 
-        center: [-104, 40], // longitude, latitude
-        zoom: 7,
+        center: [-104.9, 39.73], // longitude, latitude
+        zoom: 11,
         sliderStyle: "large",
-        minZoom: 7
-        
+        minZoom: 7 
     });
-    
     map.on("layers-add-result", function (evt) {
         opsMap.setVisibleLayers([0]);
         var toc = new TOC({  //Table of Contents info
@@ -99,23 +96,16 @@
     infoTemplate = new InfoTemplate();
     infoTemplate.setTitle(infoTemplateTitle);
     infoTemplate.setContent(popupData);
-
     opsMap = new ArcGISDynamicMapServiceLayer(opsURL, {
-        outFields: ["*"]
-    });
+        outFields: ["*"],
 
+    });
     opsMap.on("mouse-over", function () {
         map.setMapCursor("pointer");
     });
     opsMap.on("mouse-out", function () {
         map.setMapCursor("default");
     });
-    document.getElementById('allClosed').onclick = function (evt) {
-        opsMap.setVisibleLayers([1, 2, 3, 4, 5, 6]);
-    };
-    document.getElementById('allRemove').onclick = function (evt) {
-        opsMap.setVisibleLayers([]);
-    };
     map.addLayers([opsMap]);
     window.onload = findEvents();
           
