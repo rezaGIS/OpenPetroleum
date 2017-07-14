@@ -3,6 +3,8 @@
     "esri/layers/ArcGISDynamicMapServiceLayer",
     "esri/layers/FeatureLayer",
     "esri/dijit/Legend",
+    "esri/dijit/Popup",
+    "esri/dijit/PopupTemplate",
     "dojo/_base/array",
     "esri/InfoTemplate",
     "esri/dijit/Search",
@@ -14,6 +16,7 @@
     "dojo/_base/connect",
     "dojo/dom",
     "agsjs/dijit/TOC",
+    "dojo/dom-construct",
     "dojo/ready",
     "dojo/domReady!"
 ], function (
@@ -21,6 +24,8 @@
     ArcGISDynamicMapServiceLayer,
     FeatureLayer,
     Legend,
+    Popup,
+    PopupTemplate,
     arrayUtils,
     InfoTemplate,
     Search,
@@ -32,10 +37,12 @@
     dom,
     connect,
     TOC,
+    domConstruct,
     ready
     ) {
     parser.parse();
     // dgrid fields
+
     grid = new (declare([Grid, Selection]))({
         bufferRows: Infinity,
         columns: {
@@ -59,12 +66,17 @@
             datePattern: 'MM/dd/yyyy'
         });
     }
+    var popup = new Popup({
+    }, domConstruct.create("div"));
+    var opsPopupTemplate = new PopupTemplate({ title:"test" })
     map = new Map("mapDiv", {
         basemap: "topo", 
         center: [-104.9, 39.73], // longitude, latitude
         zoom: 11,
         sliderStyle: "large",
-        minZoom: 7 
+        minZoom: 7,
+        infoWindow: popup
+        
     });
     map.on("layers-add-result", function (evt) {
         opsMap.setVisibleLayers([0]);
@@ -98,6 +110,7 @@
     infoTemplate.setContent(popupData);
     opsMap = new ArcGISDynamicMapServiceLayer(opsURL, {
         outFields: ["*"],
+        infoTemplate: opsPopupTemplate
 
     });
     opsMap.on("mouse-over", function () {
