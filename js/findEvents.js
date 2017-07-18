@@ -7,8 +7,7 @@
     "esri/tasks/QueryTask",
     "esri/dijit/Search",
     "esri/geometry/Circle",
-    "esri/geometry/Point",
-    "esri/geometry/Extent",
+    "esri/geometry/Point",   
     "esri/symbols/SimpleMarkerSymbol",
     "esri/symbols/SimpleFillSymbol",
     "esri/symbols/SimpleLineSymbol",
@@ -29,7 +28,6 @@
      Search,
      Circle,
      Point,
-     Extent,
      SimpleMarkerSymbol,
      SimpleFillSymbol,
      SimpleLineSymbol,
@@ -50,12 +48,7 @@
         var mapClickEvent;
         var center;
         /*--Geocoder--*/
-        var coloradoExtent = new Extent({
-            xmin: -109.205,
-            ymin: 36.944,
-            xmax: -101.919,
-            ymax: 41.034
-        })
+        
         var searchGeocoder = new Search({ map: map, sources: [] }, "search");
         searchGeocoder.on("load", function () {
             var sources = searchGeocoder.sources;
@@ -163,6 +156,7 @@
             var graphic = new Graphic(circle, circleSymbol);
             map.graphics.add(graphic);
             queryOps.geometry = circleExtent;
+            DEBUG && console.log(circleExtent);
             map.setExtent((circleExtent).expand(1.3));
             findFeatures();
         }

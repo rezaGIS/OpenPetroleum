@@ -1,10 +1,13 @@
 ﻿require([
     "esri/map",
+    "esri/Color",
     "esri/layers/ArcGISDynamicMapServiceLayer",
     "esri/layers/FeatureLayer",
     "esri/dijit/Legend",
+    "esri/InfoTemplate",
     "esri/dijit/Popup",
     "esri/dijit/PopupTemplate",
+    "esri/geometry/Extent",
     "dojo/_base/array",
     "esri/InfoTemplate",
     "esri/dijit/Search",
@@ -21,11 +24,14 @@
     "dojo/domReady!"
 ], function (
     Map,
+    Color,
     ArcGISDynamicMapServiceLayer,
     FeatureLayer,
     Legend,
+    InfoTemplate,
     Popup,
     PopupTemplate,
+    Extent,
     arrayUtils,
     InfoTemplate,
     Search,
@@ -42,6 +48,7 @@
     ) {
     parser.parse();
     // dgrid fields
+    
 
     grid = new (declare([Grid, Selection]))({
         bufferRows: Infinity,
@@ -59,6 +66,12 @@
         }
     }, "grid");
     // Function for DGRID date/time formatter
+    coloradoExtent = new Extent({
+        xmin: -109.205,
+        ymin: 36.944,
+        xmax: -101.919,
+        ymax: 41.034
+    })
     function formatTimestamp(value) {
         var inputDate = new Date(value);
         return dojo.date.locale.format(inputDate, {
@@ -113,14 +126,12 @@
         infoTemplate: opsPopupTemplate
 
     });
-    opsMap.on("mouse-over", function () {
-        map.setMapCursor("pointer");
-    });
-    opsMap.on("mouse-out", function () {
-        map.setMapCursor("default");
-    });
+    
     map.addLayers([opsMap]);
-    window.onload = findEvents();
+    window.onload = function fireTools() {
+        findEvents();
+        readyIdent();
+    };
           
 });
 
