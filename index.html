@@ -46,6 +46,9 @@
                 $('.off-bottom').toggleClass('active');
             });
         });
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
         // GA
         //(function (i, s, o, g, r, a, m) {
         //    i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
@@ -146,7 +149,6 @@
                                                 <p>Enter search criteria:</p>
                                             </div>
                                             <div class="input-group">
-
                                                 <input type="text" class="form-control" aria-label="..." id="qryBox">
                                                 <div class="input-group-btn" id="qryDropBtn">
                                                     <select id="qryField" name="qryField" class="form-control">
@@ -173,7 +175,7 @@
                 <p class="visible-xs">
                     <button type="button" id="sideBarBtn" class="btn btn-primary" data-toggle="offcanvas"><i class="glyphicon glyphicon-wrench"></i></button>
                 </p>
-                <div id="mapDiv"></div>
+                <div id="mapDiv"><div id="basemapToggle"></div></div>
             </div>
             <div id="bottomPanel" class="off-bottom"><div id="grid"></div></div>
         </div>

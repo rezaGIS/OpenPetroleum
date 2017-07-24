@@ -43,9 +43,9 @@
         /*--Common Resources--*/      
         var queryOps = new Query();
         var circleSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULL, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SHORTDASHDOTDOT, new Color([105, 105, 105]), 2), new Color([255, 255, 0, 0.25]));
-        queryOps.outFields = ["Facility_ID", "Event_ID", "Site_Name", "Address", "City_State_Zip", "Status", "OPS_Contact_Name", "Phone", "Email", "Latitude", "Longitude", "Closure_Type", "Date_of_Release", "Closure_Date", "ID"];
+        queryOps.outFields = outFields;
         queryOps.returnGeometry = true;
-        var mapClickEvent;
+        
         var center;
         /*--Geocoder--*/
         
@@ -193,6 +193,7 @@
         document.getElementById("radio").addEventListener("change", function toolListen() {
             if (document.getElementById("useMap").checked == true) {
                 DEBUG && console.log("Use map click.")
+                identifyEvent.remove();
                 document.getElementById("clickDesc").style.display = "block";
                 document.getElementById("search").style.display = "none";
                 activateMapClick();              
@@ -202,6 +203,7 @@
                 document.getElementById("search").style.display = "block";
                 document.getElementById("clickDesc").style.display = "none";
                 mapClickEvent.remove(); // disable map click search
+                readyIdent();
             }
         });
     });      

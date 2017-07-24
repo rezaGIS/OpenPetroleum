@@ -22,15 +22,14 @@
         domConstruct
         ) {
 
-        map.on("click", function identify(evt) {
+        identifyEvent = map.on("click", function identify(evt) {
 
             identifyOpsParams = new IdentifyParameters();
             identifyOps = new IdentifyTask(opsURL);
-
-            identifyOpsParams.layerIds = [0,2];
-            identifyOpsParams.layerOption = IdentifyParameters.LAYER_OPTION_ALL;
+            identifyOpsParams.layerIds = [0, 2, 3, 4, 5, 6];
+            identifyOpsParams.layerOption = IdentifyParameters.LAYER_OPTION_VISIBLE;
             identifyOpsParams.mapExtent = map.extent;
-            identifyOpsParams.tolerance = 10;
+            identifyOpsParams.tolerance = 1;
             identifyOpsParams.geometry = evt.mapPoint;
             identifyOpsParams.returnGeometry = true;
             console.log(identifyOpsParams)
@@ -43,12 +42,15 @@
                     feature.attributes.layerName = layerName;
                     if (layerName === "Open Events") {
                         var openEventsTemplate = new InfoTemplate("Open Petroleum Event");
-                        console.log("hi")
                         feature.setInfoTemplate(openEventsTemplate);
                     }
-                    if (layerName === "Tier 1"){
-                        var tier1EventsTemplate = new InfoTemplate("Closed Petroleum Event");
-                        feature.setInfoTemplate(tier1EventsTemplate);
+                    if (layerName === ("Tier 1") || ("Tier 2") || ("Other/Unknown")){
+                        var closedEventsTemplate = new InfoTemplate("Closed Petroleum Event", closedData);
+                        feature.setInfoTemplate(closedEventsTemplate);
+                    }
+                    if (layerName === ("Tier 4" || "Tier 3")) {
+                        var tier4EventsTemplate = new InfoTemplate("Closed Petroleum Event", tier4Data);
+                        feature.setInfoTemplate(tier4EventsTemplate);
                     }
                     return feature;
                 });

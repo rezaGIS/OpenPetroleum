@@ -107,3 +107,18 @@ html, body {
     height:auto;
 
 }
+#basemapToggle {
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        z-index: 50;
+    }
+@media (max-width: 767px) {
+    #basemapToggle {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 50;
+    }
+}
+

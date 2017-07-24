@@ -4,6 +4,7 @@
     "esri/layers/ArcGISDynamicMapServiceLayer",
     "esri/layers/FeatureLayer",
     "esri/dijit/Legend",
+    "esri/dijit/BasemapToggle",
     "esri/InfoTemplate",
     "esri/dijit/Popup",
     "esri/dijit/PopupTemplate",
@@ -28,6 +29,7 @@
     ArcGISDynamicMapServiceLayer,
     FeatureLayer,
     Legend,
+    BasemapToggle,
     InfoTemplate,
     Popup,
     PopupTemplate,
@@ -48,8 +50,6 @@
     ) {
     parser.parse();
     // dgrid fields
-    
-
     grid = new (declare([Grid, Selection]))({
         bufferRows: Infinity,
         columns: {
@@ -88,8 +88,7 @@
         zoom: 11,
         sliderStyle: "large",
         minZoom: 7,
-        infoWindow: popup
-        
+        infoWindow: popup      
     });
     map.on("layers-add-result", function (evt) {
         opsMap.setVisibleLayers([0]);
@@ -118,15 +117,16 @@
             }
         });
     });
-    infoTemplate = new InfoTemplate();
-    infoTemplate.setTitle(infoTemplateTitle);
-    infoTemplate.setContent(popupData);
     opsMap = new ArcGISDynamicMapServiceLayer(opsURL, {
-        outFields: ["*"],
+        outFields: outFields,
         infoTemplate: opsPopupTemplate
 
     });
-    
+    var toggle = new BasemapToggle({
+        map: map,
+        basemap: "satellite"
+    }, "basemapToggle");
+    toggle.startup();
     map.addLayers([opsMap]);
     window.onload = function fireTools() {
         findEvents();
