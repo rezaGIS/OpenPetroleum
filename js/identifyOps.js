@@ -23,10 +23,10 @@
         ) {
 
         identifyEvent = map.on("click", function identify(evt) {
-
+            var identifyIdsTemp = opsMap.visibleLayers;
             identifyOpsParams = new IdentifyParameters();
             identifyOps = new IdentifyTask(opsURL);
-            identifyOpsParams.layerIds = [0, 2, 3, 4, 5, 6];
+            identifyOpsParams.layerIds = [identifyIdsTemp];
             identifyOpsParams.layerOption = IdentifyParameters.LAYER_OPTION_VISIBLE;
             identifyOpsParams.mapExtent = map.extent;
             identifyOpsParams.tolerance = 1;
@@ -41,15 +41,15 @@
                     console.log(feature);
                     feature.attributes.layerName = layerName;
                     if (layerName === "Open Events") {
-                        var openEventsTemplate = new InfoTemplate("Open Petroleum Event");
+                        var openEventsTemplate = new InfoTemplate("Open Event", openTemplateData);
                         feature.setInfoTemplate(openEventsTemplate);
                     }
-                    if (layerName === ("Tier 1") || ("Tier 2") || ("Other/Unknown")){
-                        var closedEventsTemplate = new InfoTemplate("Closed Petroleum Event", closedData);
+                    if (layerName === "Tier 1" || layerName === "Tier 2" || layerName === "Others/Unknown") {
+                        var closedEventsTemplate = new InfoTemplate("Closed Event", closedTemplateData);
                         feature.setInfoTemplate(closedEventsTemplate);
                     }
-                    if (layerName === ("Tier 4" || "Tier 3")) {
-                        var tier4EventsTemplate = new InfoTemplate("Closed Petroleum Event", tier4Data);
+                    if (layerName === "Tier 4" || layerName === "Tier 3") {
+                        var tier4EventsTemplate = new InfoTemplate("Closed Event", tier4TemplateData);
                         feature.setInfoTemplate(tier4EventsTemplate);
                     }
                     return feature;
