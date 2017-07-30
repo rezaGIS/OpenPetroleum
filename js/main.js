@@ -1,4 +1,5 @@
 ﻿require([
+    /*--ESRI--*/
     "esri/map",
     "esri/Color",
     "esri/layers/ArcGISDynamicMapServiceLayer",
