@@ -26,9 +26,9 @@ body {
 @media screen and (max-width: 768px) {
     .row-offcanvas {
         position: relative;
-        -webkit-transition: all 0.25s ease-out;
-        -moz-transition: all 0.25s ease-out;
-        transition: all 0.25s ease-out;
+        -webkit-transition: all 0.5s ease-out;
+        -moz-transition: all 0.5s ease-out;
+        transition: all 0.5s ease-out;
         width: calc(100% + 300px);
     }
 
@@ -37,22 +37,30 @@ body {
     }
 
     .off-bottom {
-        left: 300px;
+        position:absolute;
+        bottom: 0;
+        height: 25%;
+        left:300px;
+        width: calc(100% - 300px);
+        
     }
 
     .row-offcanvas-left.active {
-        left: 0;
+        left: auto;
     }
 
     .off-bottom.active {
         left: 0;
+        width:100%
     }
 
     .sidebar-offcanvas {
         position: absolute;
         top: 0;
+        
     }
 }
+
 
 #sideBarBtn {
     position: absolute;

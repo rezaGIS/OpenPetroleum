@@ -1,51 +1,50 @@
 ﻿#grid {
     height:100%;
-    width:100%;
-    position:absolute;
+    overflow:auto;
     font-family:"Trebuchet MS";
 }
 .field-eventID {
-    width: 45px;
+    min-width: 45px;
 }
 
 .field-facility {
-    width: 45px;
+    min-width: 45px;
 }
 
 .field-street {
-    width: 100px;
+    min-width: 100px;
 }
 
 .field-status {
-    width: 50px;
+    min-width: 50px;
 }
 
 .field-cityStateZip {
-    width: 100px;
+    min-width: 100px;
 }
 
 .field-date {
-    width: 100px;
+    min-width: 100px;
 }
 
 .field-contact {
-    width: 100px;
+    min-width: 100px;
 }
 
 .field-phone {
-    width: 100px;
+    min-width: 100px;
 }
 
 .field-email {
-    width: 150px;
+    min-width: 150px;
 }
 
 .field-siteName {
-    width: 100px;
+    min-width: 100px;
 }
 
 .dgrid-column {
-    width: 100px;
+    min-width: 100px;
 }
 .dgrid-row {
     cursor: pointer;
