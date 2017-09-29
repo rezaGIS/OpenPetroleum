@@ -40,7 +40,7 @@ var openTemplateData = "<b>Site Name:</b> ${Site_Name}</br>" + "<b>Event ID:</b>
 var closedTemplateData = "<b>Site Name:</b> ${Site_Name}</br>" + "<b>Event ID:</b> ${Event_ID}</br>" + "<b>Facility ID:</b> ${Facility_ID}</br>" +
                 "<b>Status:</b> ${Status}</br>" + "<b>Type:</b> ${Closure_Type}</br>" + "<b>Address:</b> ${Address}</br>" +
                 "<b>City/State:</b> ${City_State_Zip}</br>" + "<b>Release Date:</b> ${Date_of_Release:DateFormat(selector: 'date', fullYear: true)}</br>" +
-                "<b>Contact:</b> ${OPS_Contact_Name}</br>" + "<b>Phone:</b> ${Phone}</br>" + "<b>Email:</b> ${Email}</br>" +
+                "<b>Closure Date:</b> ${Closure_Date:DateFormat(selector: 'date', fullYear: true)}</br>" + "<b>Contact:</b> ${OPS_Contact_Name}</br>" + "<b>Phone:</b> ${Phone}</br>" + "<b>Email:</b> ${Email}</br>" +
                 "</br><a href=" + costisURL + " target='_blank'>View COSTIS</a> </br>";
 var tier4TemplateData = closedTemplateData + "<a href=" + pdfURL + " target='_blank'>View Closure Summary</a> </br>";
 /*--Identify Ops--*/
