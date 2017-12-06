@@ -44,7 +44,7 @@
                         var openEventsTemplate = new InfoTemplate("Open Event", openTemplateData);
                         feature.setInfoTemplate(openEventsTemplate);
                     }
-                    if (layerName === "Tier 1" || layerName === "Tier 2" || layerName === "Others/Unknown") {
+                    if (layerName === "Tier 1" || layerName === "Tier 2" || layerName === "Unknown") {
                         var closedEventsTemplate = new InfoTemplate("Closed Event", closedTemplateData);
                         feature.setInfoTemplate(closedEventsTemplate);
                     }
