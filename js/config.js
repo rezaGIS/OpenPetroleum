@@ -31,7 +31,7 @@ var opsMap;
 var infoTemplate;
 var infoTemplateTitle = "<b>Release Event</b>";
 var costisURL = "https://opus.cdle.state.co.us/OIS2000/event.asp?h_id=" + "${Event_ID}";
-var pdfURL = "https://gis.colorado.gov/appesri/OpenPetroleum_PDF/Event" + "${Event_ID}" + "_closuresummary.pdf";
+var pdfURL = "https://gis.colorado.gov/OpenPetroleum/PDF/Event" + "${Event_ID}" + "_closuresummary.pdf";
 var openTemplateData = "<b>Site Name:</b> ${Site_Name}</br>" + "<b>Event ID:</b> ${Event_ID}</br>" + "<b>Facility ID:</b> ${Facility_ID}</br>" +
                 "<b>Status:</b> ${Status}</br>" + "<b>Type:</b> ${Status_Type}</br>" +  "<b>Address:</b> ${Address}</br>" +
                 "<b>City/State:</b> ${City_State_Zip}</br>" + "<b>Release Date:</b> ${Date_of_Release:DateFormat(selector: 'date', fullYear: true)}</br>" +
