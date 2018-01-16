@@ -3,15 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
-    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/Site.css")
+    @Styles.Render("~/Content/bootstrap.css")
+    @Scripts.Render("~/bundles/modernizr")
     <!-- ESRI CSS API 3.18-->
-    <link rel="stylesheet" href="https://js.arcgis.com/3.18/dijit/themes/claro/claro.css">
-    <link rel="stylesheet" href="https://js.arcgis.com/3.18/esri/css/esri.css">
-    <link rel="stylesheet" href="https://js.arcgis.com/3.18/dgrid/css/dgrid.css">
-    <link rel="stylesheet" type="text/css" href="~/Content/agsjs/css/agsjs.css" />
+    @Styles.Render("https://js.arcgis.com/3.18/dijit/themes/claro/claro.css")
+    @Styles.Render("https://js.arcgis.com/3.18/esri/css/esri.css")
+    @Styles.Render("https://js.arcgis.com/3.18/dgrid/css/dgrid.css")
+    @Styles.Render("~/Content/agsjs/css/agsjs.css")
 
     <script type="text/javascript">
         // helpful for understanding dojoConfig.packages vs. dojoConfig.paths:
@@ -23,18 +23,18 @@
             }
         };
     </script>
-    
-    <script src="https://js.arcgis.com/3.18/"></script>
+    @Scripts.Render("https://js.arcgis.com/3.18/")
 
     <!-- Custom styles for this template -->
-    <link href="~/Content/index.css" rel="stylesheet" />
-    <link href="~/Content/sidebar.css" rel="stylesheet" />
-    <link href="~/Content/dgrid.css" rel="stylesheet" />
+    @Styles.Render("~/Content/index.css")
+    @Styles.Render("~/Content/sidebar.css")
+    @Styles.Render("~/Content/dgrid.css")
     
-    <script type="text/javascript" src="~/Scripts/config.js"></script>
-    <script type="text/javascript" src="~/Scripts/main.js"></script>
-    <script type="text/javascript" src="~/Scripts/findEvents.js"></script>
-    <script type="text/javascript" src="~/Scripts/identifyOps.js"></script>
+    @Scripts.Render("~/Scripts/config.js")
+    @Scripts.Render("~/Scripts/main.js")
+    @Scripts.Render("~/Scripts/findEvents.js")
+    @Scripts.Render("~/Scripts/identifyOps.js")
+
     
 </head>
 <body class="claro">
@@ -51,6 +51,7 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse pull-right">
                 <ul class="nav navbar-nav">
+                    @Html.Partial("_LoginPartial")
                     <li><a href="https://data.colorado.gov/Environment/Active-OPS-Petroleum-Release-Events-in-Colorado/v5ut-qgp7" target="_blank">Download Data</a></li>
                     <li><a href="../OpenPetroleum/html/aboutModal.html" data-toggle="modal" data-target="#aboutModal">About</a></li>
                 </ul>
@@ -59,9 +60,10 @@
     </nav>  
     <div class="container-oit body-content">
         @RenderBody()
-    </div>
 
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
+    </div>
+    @Scripts.Render("~/Scripts/jquery-1.10.2.min.js")
+    @Scripts.Render("~/Scripts/bootstrap.min.js")
+    @RenderSection("scripts", required: false)
 </body>
 </html>
