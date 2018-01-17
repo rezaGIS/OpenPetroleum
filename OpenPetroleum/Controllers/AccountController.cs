@@ -141,12 +141,13 @@ namespace OpenPetroleum.Controllers
         {
             return View();
         }
-
+        // POST: /Users/Remove
+        
         //
         // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
         //public async Task<ActionResult> Register(RegisterViewModel model)
         //{
         //    if (ModelState.IsValid)
